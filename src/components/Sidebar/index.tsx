@@ -15,7 +15,7 @@ import {
   Assessment as MetricsIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
@@ -29,8 +29,7 @@ const menuItems = [
 
 export default function Sidebar() {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
 
   return (
     <Drawer
@@ -51,8 +50,8 @@ export default function Sidebar() {
             <ListItem
               button
               key={item.text}
-              onClick={() => navigate(item.path)}
-              selected={location.pathname === item.path}
+              onClick={() => router.push(item.path)}
+              selected={router.pathname === item.path}
               sx={{
                 '&.Mui-selected': {
                   backgroundColor: theme.palette.primary.main + '20',
@@ -70,7 +69,7 @@ export default function Sidebar() {
             >
               <ListItemIcon
                 sx={{
-                  color: location.pathname === item.path
+                  color: router.pathname === item.path
                     ? theme.palette.primary.main
                     : 'inherit',
                 }}
@@ -80,7 +79,7 @@ export default function Sidebar() {
               <ListItemText
                 primary={item.text}
                 sx={{
-                  color: location.pathname === item.path
+                  color: router.pathname === item.path
                     ? theme.palette.primary.main
                     : 'inherit',
                 }}

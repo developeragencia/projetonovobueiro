@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import {
   TrendingUp,
   Speed,
   Timeline,
-  AutoGraph,
   Security,
   Hub,
   Dashboard,
   Campaign,
-  Payment,
-  ShoppingCart,
-  CreditCard,
-  AccountBalance,
   Assessment,
-  Settings,
-  Notifications
+  Settings
 } from '@mui/icons-material';
 import {
   Container,
@@ -23,7 +18,6 @@ import {
   Paper,
   Typography,
   Box,
-  IconButton,
   Button,
   Card,
   CardContent,
@@ -341,8 +335,8 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
             {/* Hubla */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
-              <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/hubla.png" alt="Hubla" className="h-12" />
+              <div className="flex items-center justify-center h-16 w-16 mx-auto relative">
+                <Image src="/images/hubla.png" alt="Hubla" width={48} height={48} />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Hubla</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -352,8 +346,8 @@ export default function Home() {
 
             {/* Monetizze */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
-              <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/monetizze.png" alt="Monetizze" className="h-12" />
+              <div className="flex items-center justify-center h-16 w-16 mx-auto relative">
+                <Image src="/images/monetizze.png" alt="Monetizze" width={48} height={48} />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Monetizze</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -363,8 +357,8 @@ export default function Home() {
 
             {/* InovaPag */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
-              <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/inovapag.png" alt="InovaPag" className="h-12" />
+              <div className="flex items-center justify-center h-16 w-16 mx-auto relative">
+                <Image src="/images/inovapag.png" alt="InovaPag" width={48} height={48} />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">InovaPag</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -374,8 +368,8 @@ export default function Home() {
 
             {/* WooCommerce */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
-              <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/woocommerce.png" alt="WooCommerce" className="h-12" />
+              <div className="flex items-center justify-center h-16 w-16 mx-auto relative">
+                <Image src="/images/woocommerce.png" alt="WooCommerce" width={48} height={48} />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">WooCommerce</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -385,8 +379,8 @@ export default function Home() {
 
             {/* Perfect Pay */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
-              <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/perfectpay.png" alt="Perfect Pay" className="h-12" />
+              <div className="flex items-center justify-center h-16 w-16 mx-auto relative">
+                <Image src="/images/perfectpay.png" alt="Perfect Pay" width={48} height={48} />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Perfect Pay</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -396,12 +390,12 @@ export default function Home() {
 
             {/* Logzz */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
-              <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/logzz.png" alt="Logzz" className="h-12" />
+              <div className="flex items-center justify-center h-16 w-16 mx-auto relative">
+                <Image src="/images/logzz.png" alt="Logzz" width={48} height={48} />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Logzz</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
-                Gestão logística integrada
+                Logística integrada para e-commerce
               </p>
             </div>
 

@@ -36,7 +36,7 @@ export const Header: React.FC = () => {
                   <h3 className="text-lg font-semibold mb-4">Notificações</h3>
                   <ul className="space-y-3">
                     <li className="p-2 hover:bg-gray-50 rounded">
-                      <p className="text-sm">Campanha "Black Friday" atingiu o orçamento diário</p>
+                      <p className="text-sm">Campanha &quot;Black Friday&quot; atingiu o orçamento diário</p>
                       <span className="text-xs text-gray-500">Há 5 minutos</span>
                     </li>
                     <li className="p-2 hover:bg-gray-50 rounded">

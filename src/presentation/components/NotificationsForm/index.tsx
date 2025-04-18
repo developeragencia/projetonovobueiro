@@ -13,7 +13,8 @@ import {
   Alert,
   Typography,
   Slider,
-  Grid
+  Grid,
+  Paper
 } from '@mui/material';
 
 interface NotificationSettings {
@@ -27,7 +28,11 @@ interface NotificationSettings {
   frequency: string;
 }
 
-export const NotificationsForm: React.FC = () => {
+interface NotificationsFormProps {
+  onSave: (settings: NotificationSettings) => void;
+}
+
+export const NotificationsForm: React.FC<NotificationsFormProps> = ({ onSave }) => {
   const [settings, setSettings] = useState<NotificationSettings>({
     email: true,
     push: true,
@@ -70,7 +75,7 @@ export const NotificationsForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // TODO: Implementar a lógica de salvar as configurações
+    onSave(settings);
     setSnackbar({
       open: true,
       message: 'Configurações de notificação salvas com sucesso!',
@@ -83,12 +88,15 @@ export const NotificationsForm: React.FC = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400 }}>
-      <Typography variant="subtitle1" gutterBottom>
-        Canais de Notificação
+    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600, mx: 'auto', p: 3 }}>
+      <Typography variant="h6" gutterBottom>
+        Configurações de Notificações
       </Typography>
-      
-      <FormGroup>
+
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="subtitle1" gutterBottom>
+          Canais de Notificação
+        </Typography>
         <FormControlLabel
           control={
             <Switch
@@ -97,9 +105,8 @@ export const NotificationsForm: React.FC = () => {
               name="email"
             />
           }
-          label="Email"
+          label="Notificações por E-mail"
         />
-        
         <FormControlLabel
           control={
             <Switch
@@ -110,7 +117,6 @@ export const NotificationsForm: React.FC = () => {
           }
           label="Notificações Push"
         />
-
         <FormControlLabel
           control={
             <Switch
@@ -121,69 +127,47 @@ export const NotificationsForm: React.FC = () => {
           }
           label="Slack"
         />
-      </FormGroup>
+      </Box>
 
-      <Typography variant="subtitle1" gutterBottom sx={{ mt: 3 }}>
-        Tipos de Alerta
-      </Typography>
-
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={settings.budgetAlerts}
-              onChange={handleChange}
-              name="budgetAlerts"
-            />
-          }
-          label="Alertas de Orçamento"
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="subtitle1" gutterBottom>
+          Alertas de Orçamento
+        </Typography>
+        <Typography variant="body2" color="textSecondary" gutterBottom>
+          Alertar quando o orçamento atingir a porcentagem:
+        </Typography>
+        <Slider
+          value={settings.budgetThreshold}
+          onChange={handleSliderChange('budgetThreshold')}
+          disabled={!settings.budgetAlerts}
+          aria-labelledby="budget-threshold-slider"
+          valueLabelDisplay="auto"
+          step={5}
+          marks
+          min={50}
+          max={100}
         />
+      </Box>
 
-        <Box sx={{ px: 2, mt: 1 }}>
-          <Typography variant="body2" gutterBottom>
-            Limite de Orçamento ({settings.budgetThreshold}%)
-          </Typography>
-          <Slider
-            value={settings.budgetThreshold}
-            onChange={handleSliderChange('budgetThreshold')}
-            disabled={!settings.budgetAlerts}
-            aria-labelledby="budget-threshold-slider"
-            valueLabelDisplay="auto"
-            step={5}
-            marks
-            min={50}
-            max={100}
-          />
-        </Box>
-
-        <FormControlLabel
-          control={
-            <Switch
-              checked={settings.performanceAlerts}
-              onChange={handleChange}
-              name="performanceAlerts"
-            />
-          }
-          label="Alertas de Performance"
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="subtitle1" gutterBottom>
+          Alertas de Performance
+        </Typography>
+        <Typography variant="body2" color="textSecondary" gutterBottom>
+          Alertar quando a performance cair mais que:
+        </Typography>
+        <Slider
+          value={settings.performanceThreshold}
+          onChange={handleSliderChange('performanceThreshold')}
+          disabled={!settings.performanceAlerts}
+          aria-labelledby="performance-threshold-slider"
+          valueLabelDisplay="auto"
+          step={5}
+          marks
+          min={5}
+          max={50}
         />
-
-        <Box sx={{ px: 2, mt: 1 }}>
-          <Typography variant="body2" gutterBottom>
-            Limite de Queda de Performance ({settings.performanceThreshold}%)
-          </Typography>
-          <Slider
-            value={settings.performanceThreshold}
-            onChange={handleSliderChange('performanceThreshold')}
-            disabled={!settings.performanceAlerts}
-            aria-labelledby="performance-threshold-slider"
-            valueLabelDisplay="auto"
-            step={5}
-            marks
-            min={5}
-            max={50}
-          />
-        </Box>
-      </FormGroup>
+      </Box>
 
       <FormControl fullWidth margin="normal">
         <InputLabel>Frequência dos Relatórios</InputLabel>
@@ -199,12 +183,11 @@ export const NotificationsForm: React.FC = () => {
         </Select>
       </FormControl>
 
-      <Box sx={{ mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          fullWidth
         >
           Salvar Configurações
         </Button>
@@ -226,4 +209,6 @@ export const NotificationsForm: React.FC = () => {
       </Snackbar>
     </Box>
   );
-}; 
+};
+
+export default NotificationsForm; 

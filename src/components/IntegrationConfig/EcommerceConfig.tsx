@@ -16,18 +16,19 @@ import {
   FormControl,
   InputLabel
 } from '@mui/material';
-import { integrationService } from '@/services/integrations';
 
 interface EcommerceConfigProps {
   open: boolean;
   onClose: () => void;
   platform: string;
+  onSave: (config: any) => Promise<void>;
 }
 
 export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
   open,
   onClose,
-  platform
+  platform,
+  onSave
 }) => {
   const [config, setConfig] = useState({
     apiKey: '',
@@ -71,13 +72,9 @@ export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
       setLoading(true);
       setError(null);
 
-      const success = await integrationService.connect(platform, config);
+      await onSave(config);
 
-      if (success) {
-        onClose();
-      } else {
-        setError('Não foi possível salvar as configurações. Tente novamente.');
-      }
+      onClose();
     } catch (err) {
       setError('Ocorreu um erro ao salvar as configurações.');
       console.error(err);
