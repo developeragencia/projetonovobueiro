@@ -15,6 +15,10 @@ interface Integration {
   status: 'connected' | 'disconnected';
 }
 
+type IntegrationType = {
+  [K in 'pagamentos' | 'ecommerce' | 'marketing']: Integration[];
+};
+
 interface UseIntegrationsReturn {
   integrations: {
     pagamentos: Integration[];
@@ -29,31 +33,31 @@ interface UseIntegrationsReturn {
 }
 
 export function useIntegrations(): UseIntegrationsReturn {
-  const [integrations, setIntegrations] = useState({
+  const [integrations, setIntegrations] = useState<IntegrationType>({
     pagamentos: [
       {
         name: 'Hubla',
         description: 'Gestão financeira completa para seu negócio',
         imageUrl: '/images/hubla.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       },
       {
         name: 'Monetizze',
         description: 'Plataforma de afiliados e produtos digitais',
         imageUrl: '/images/monetizze.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       },
       {
         name: 'InovaPag',
         description: 'Soluções inovadoras em pagamentos',
         imageUrl: '/images/inovapag.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       },
       {
         name: 'Perfect Pay',
         description: 'Checkout transparente e seguro',
         imageUrl: '/images/perfectpay.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       }
     ],
     ecommerce: [
@@ -61,13 +65,13 @@ export function useIntegrations(): UseIntegrationsReturn {
         name: 'WooCommerce',
         description: 'Plataforma de e-commerce para WordPress',
         imageUrl: '/images/woocommerce.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       },
       {
         name: 'Logzz',
         description: 'Logística integrada para e-commerce',
         imageUrl: '/images/logzz.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       }
     ],
     marketing: [
@@ -75,24 +79,24 @@ export function useIntegrations(): UseIntegrationsReturn {
         name: 'Facebook Ads',
         description: 'Plataforma de anúncios do Facebook',
         imageUrl: '/images/facebook.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       },
       {
         name: 'Google Ads',
         description: 'Plataforma de anúncios do Google',
         imageUrl: '/images/google.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       },
       {
         name: 'TikTok Ads',
         description: 'Plataforma de anúncios do TikTok',
         imageUrl: '/images/tiktok.png',
-        status: 'disconnected' as const
+        status: 'disconnected'
       }
     ]
   });
 
-  const updateIntegrationStatus = useCallback((platform: string, status: 'connected' | 'disconnected') => {
+  const updateIntegrationStatus = useCallback((platform: string, newStatus: 'connected' | 'disconnected') => {
     setIntegrations(prev => {
       const newState = { ...prev };
       
@@ -104,7 +108,7 @@ export function useIntegrations(): UseIntegrationsReturn {
         if (index !== -1) {
           newState[category as keyof typeof newState][index] = {
             ...newState[category as keyof typeof newState][index],
-            status
+            status: newStatus
           };
         }
       });

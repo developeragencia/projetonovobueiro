@@ -14,11 +14,22 @@ import {
 } from '@mui/material';
 import { integrationService } from '@/services/integrations';
 
+interface MarketingConfigData {
+  apiKey: string;
+  clientId: string;
+  clientSecret: string;
+  accountId: string;
+  accessToken: string;
+  refreshToken: string;
+  autoSync: boolean;
+  syncInterval: string;
+}
+
 interface MarketingConfigProps {
   open: boolean;
   onClose: () => void;
   platform: string;
-  onSave: (config: any) => Promise<void>;
+  onSave: (config: MarketingConfigData) => Promise<void>;
 }
 
 export const MarketingConfig: React.FC<MarketingConfigProps> = ({
@@ -27,7 +38,7 @@ export const MarketingConfig: React.FC<MarketingConfigProps> = ({
   platform,
   onSave
 }) => {
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<MarketingConfigData>({
     apiKey: '',
     clientId: '',
     clientSecret: '',
