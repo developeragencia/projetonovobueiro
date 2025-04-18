@@ -18,31 +18,26 @@ import {
 } from '@mui/material';
 
 interface NotificationSettings {
-  email: boolean;
-  push: boolean;
-  slack: boolean;
-  budgetAlerts: boolean;
-  performanceAlerts: boolean;
-  budgetThreshold: number;
-  performanceThreshold: number;
-  frequency: string;
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  notificationFrequency: string;
+  customMessage: string;
 }
 
 interface NotificationsFormProps {
-  onSave: (settings: NotificationSettings) => void;
+  onSave: (settings: NotificationSettings) => Promise<void>;
 }
 
 export const NotificationsForm: React.FC<NotificationsFormProps> = ({ onSave }) => {
   const [settings, setSettings] = useState<NotificationSettings>({
-    email: true,
-    push: true,
-    slack: false,
-    budgetAlerts: true,
-    performanceAlerts: true,
-    budgetThreshold: 80,
-    performanceThreshold: 20,
-    frequency: 'daily'
+    emailNotifications: true,
+    pushNotifications: false,
+    notificationFrequency: 'daily',
+    customMessage: ''
   });
+
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -100,9 +95,9 @@ export const NotificationsForm: React.FC<NotificationsFormProps> = ({ onSave }) 
         <FormControlLabel
           control={
             <Switch
-              checked={settings.email}
+              checked={settings.emailNotifications}
               onChange={handleChange}
-              name="email"
+              name="emailNotifications"
             />
           }
           label="Notificações por E-mail"
@@ -110,78 +105,33 @@ export const NotificationsForm: React.FC<NotificationsFormProps> = ({ onSave }) 
         <FormControlLabel
           control={
             <Switch
-              checked={settings.push}
+              checked={settings.pushNotifications}
               onChange={handleChange}
-              name="push"
+              name="pushNotifications"
             />
           }
           label="Notificações Push"
         />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={settings.slack}
-              onChange={handleChange}
-              name="slack"
-            />
-          }
-          label="Slack"
-        />
       </Box>
 
       <Box sx={{ mb: 4 }}>
         <Typography variant="subtitle1" gutterBottom>
-          Alertas de Orçamento
+          Frequência dos Relatórios
         </Typography>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          Alertar quando o orçamento atingir a porcentagem:
-        </Typography>
-        <Slider
-          value={settings.budgetThreshold}
-          onChange={handleSliderChange('budgetThreshold')}
-          disabled={!settings.budgetAlerts}
-          aria-labelledby="budget-threshold-slider"
-          valueLabelDisplay="auto"
-          step={5}
-          marks
-          min={50}
-          max={100}
-        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Frequência dos Relatórios</InputLabel>
+          <Select
+            value={settings.notificationFrequency}
+            onChange={handleSelectChange}
+            name="notificationFrequency"
+          >
+            <MenuItem value="realtime">Tempo Real</MenuItem>
+            <MenuItem value="daily">Diário</MenuItem>
+            <MenuItem value="weekly">Semanal</MenuItem>
+            <MenuItem value="monthly">Mensal</MenuItem>
+          </Select>
+        </FormControl>
       </Box>
-
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="subtitle1" gutterBottom>
-          Alertas de Performance
-        </Typography>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          Alertar quando a performance cair mais que:
-        </Typography>
-        <Slider
-          value={settings.performanceThreshold}
-          onChange={handleSliderChange('performanceThreshold')}
-          disabled={!settings.performanceAlerts}
-          aria-labelledby="performance-threshold-slider"
-          valueLabelDisplay="auto"
-          step={5}
-          marks
-          min={5}
-          max={50}
-        />
-      </Box>
-
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Frequência dos Relatórios</InputLabel>
-        <Select
-          value={settings.frequency}
-          onChange={handleSelectChange}
-          name="frequency"
-        >
-          <MenuItem value="realtime">Tempo Real</MenuItem>
-          <MenuItem value="daily">Diário</MenuItem>
-          <MenuItem value="weekly">Semanal</MenuItem>
-          <MenuItem value="monthly">Mensal</MenuItem>
-        </Select>
-      </FormControl>
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
         <Button

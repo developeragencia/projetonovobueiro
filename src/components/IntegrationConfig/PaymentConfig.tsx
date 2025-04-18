@@ -11,11 +11,17 @@ import {
   Alert
 } from '@mui/material';
 
+interface PaymentConfigData {
+  apiKey: string;
+  merchantId: string;
+  secretKey: string;
+}
+
 interface PaymentConfigProps {
   open: boolean;
   onClose: () => void;
   platform: string;
-  onSave: (config: any) => Promise<void>;
+  onSave: (config: PaymentConfigData) => Promise<void>;
 }
 
 export const PaymentConfig: React.FC<PaymentConfigProps> = ({
@@ -24,7 +30,7 @@ export const PaymentConfig: React.FC<PaymentConfigProps> = ({
   platform,
   onSave
 }) => {
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<PaymentConfigData>({
     apiKey: '',
     merchantId: '',
     secretKey: ''

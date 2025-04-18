@@ -402,7 +402,13 @@ export default function Home() {
             {/* Greenn */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
               <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/greenn.png" alt="Greenn" className="h-12" />
+                <Image
+                  src="/images/greenn.png"
+                  alt="Greenn"
+                  width={48}
+                  height={48}
+                  className="h-12"
+                />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Greenn</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -413,7 +419,13 @@ export default function Home() {
             {/* Doppus */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
               <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/doppus.png" alt="Doppus" className="h-12" />
+                <Image
+                  src="/images/doppus.png"
+                  alt="Doppus"
+                  width={48}
+                  height={48}
+                  className="h-12"
+                />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Doppus</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -424,7 +436,13 @@ export default function Home() {
             {/* Cinq Pay */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
               <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/cinqpay.png" alt="Cinq Pay" className="h-12" />
+                <Image
+                  src="/images/cinqpay.png"
+                  alt="Cinq Pay"
+                  width={48}
+                  height={48}
+                  className="h-12"
+                />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Cinq Pay</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -435,7 +453,13 @@ export default function Home() {
             {/* TriboPay */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
               <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/tribopay.png" alt="TriboPay" className="h-12" />
+                <Image
+                  src="/images/tribopay.png"
+                  alt="TriboPay"
+                  width={48}
+                  height={48}
+                  className="h-12"
+                />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">TriboPay</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -446,7 +470,13 @@ export default function Home() {
             {/* Kiwify */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
               <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/kiwify.png" alt="Kiwify" className="h-12" />
+                <Image
+                  src="/images/kiwify.png"
+                  alt="Kiwify"
+                  width={48}
+                  height={48}
+                  className="h-12"
+                />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Kiwify</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -457,7 +487,13 @@ export default function Home() {
             {/* Eduzz */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
               <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/eduzz.png" alt="Eduzz" className="h-12" />
+                <Image
+                  src="/images/eduzz.png"
+                  alt="Eduzz"
+                  width={48}
+                  height={48}
+                  className="h-12"
+                />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Eduzz</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">
@@ -468,7 +504,13 @@ export default function Home() {
             {/* Octus Pay */}
             <div className="bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg transform hover:scale-105 transition-all duration-300 hover:bg-opacity-20">
               <div className="flex items-center justify-center h-16 w-16 mx-auto">
-                <img src="/images/octuspay.png" alt="Octus Pay" className="h-12" />
+                <Image
+                  src="/images/octuspay.png"
+                  alt="Octus Pay"
+                  width={48}
+                  height={48}
+                  className="h-12"
+                />
               </div>
               <h3 className="mt-4 text-lg font-medium text-white text-center">Octus Pay</h3>
               <p className="mt-2 text-sm text-gray-300 text-center">

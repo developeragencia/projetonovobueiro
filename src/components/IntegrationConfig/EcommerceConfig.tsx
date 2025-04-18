@@ -17,11 +17,26 @@ import {
   InputLabel
 } from '@mui/material';
 
+type OrderStatus = 'pending' | 'processing' | 'completed' | 'cancelled' | 'refunded';
+
+interface EcommerceConfigData {
+  apiKey: string;
+  storeUrl: string;
+  webhookUrl: string;
+  syncProducts: boolean;
+  syncOrders: boolean;
+  syncCustomers: boolean;
+  syncInventory: boolean;
+  syncInterval: string;
+  orderStatus: OrderStatus[];
+  notifyCustomer: boolean;
+}
+
 interface EcommerceConfigProps {
   open: boolean;
   onClose: () => void;
   platform: string;
-  onSave: (config: any) => Promise<void>;
+  onSave: (config: EcommerceConfigData) => Promise<void>;
 }
 
 export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
@@ -30,7 +45,7 @@ export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
   platform,
   onSave
 }) => {
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<EcommerceConfigData>({
     apiKey: '',
     storeUrl: '',
     webhookUrl: '',
@@ -60,10 +75,10 @@ export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
     });
   };
 
-  const handleSelectChange = (event: any) => {
+  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setConfig({
       ...config,
-      orderStatus: event.target.value
+      orderStatus: event.target.value as OrderStatus[]
     });
   };
 
