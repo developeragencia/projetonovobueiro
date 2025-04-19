@@ -5,7 +5,15 @@ interface IntegrationConfig {
   apiKey?: string;
   clientId?: string;
   clientSecret?: string;
-  [key: string]: any;
+  webhookUrl?: string;
+  storeUrl?: string;
+  syncInterval?: string;
+  syncProducts?: boolean;
+  syncOrders?: boolean;
+  syncCustomers?: boolean;
+  syncInventory?: boolean;
+  notifyCustomer?: boolean;
+  [key: string]: string | boolean | undefined;
 }
 
 interface Integration {

@@ -1,136 +1,102 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
-  TextField,
-  Button,
-  FormControlLabel,
+  Typography,
   Switch,
-  Paper,
-  FormControl,
-  FormGroup,
-  InputLabel,
-  Select,
-  MenuItem,
+  FormControlLabel,
+  Button,
   Snackbar,
-  Alert,
-  Typography
+  Alert
 } from '@mui/material';
 
 interface PreferencesFormProps {
-  onSave: (preferences: any) => void;
+  onSave: (preferences: PreferencesData) => Promise<void>;
+}
+
+interface PreferencesData {
+  darkMode: boolean;
+  notifications: boolean;
+  emailUpdates: boolean;
+  language: string;
 }
 
 const PreferencesForm: React.FC<PreferencesFormProps> = ({ onSave }) => {
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(true);
-  const [theme, setTheme] = useState('light');
-  const [language, setLanguage] = useState('pt-BR');
-  const [timezone, setTimezone] = useState('America/Sao_Paulo');
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [preferences, setPreferences] = React.useState<PreferencesData>({
+    darkMode: false,
+    notifications: true,
+    emailUpdates: true,
+    language: 'pt-BR'
+  });
+  const [error, setError] = React.useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave({
-      emailNotifications,
-      pushNotifications,
-      theme,
-      language,
-      timezone
-    });
-    setShowSnackbar(true);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    setPreferences((prev) => ({
+      ...prev,
+      [name]: checked
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await onSave(preferences);
+      setError(null);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar preferências';
+      setError(errorMessage);
+      console.error('Erro ao salvar preferências:', error);
+    }
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600, mx: 'auto', p: 3 }}>
+    <Box>
       <Typography variant="h6" gutterBottom>
-        Preferências do Sistema
+        Preferências
       </Typography>
-
-      <FormGroup sx={{ mb: 3 }}>
+      <Box sx={{ mt: 2 }}>
         <FormControlLabel
           control={
             <Switch
-              checked={emailNotifications}
-              onChange={(e) => setEmailNotifications(e.target.checked)}
+              checked={preferences.darkMode}
+              onChange={handleChange}
+              name="darkMode"
             />
           }
-          label="Notificações por E-mail"
+          label="Modo Escuro"
         />
         <FormControlLabel
           control={
             <Switch
-              checked={pushNotifications}
-              onChange={(e) => setPushNotifications(e.target.checked)}
+              checked={preferences.notifications}
+              onChange={handleChange}
+              name="notifications"
             />
           }
-          label="Notificações Push"
+          label="Notificações"
         />
-      </FormGroup>
-
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel>Tema</InputLabel>
-        <Select
-          value={theme}
-          label="Tema"
-          onChange={(e) => setTheme(e.target.value)}
-        >
-          <MenuItem value="light">Claro</MenuItem>
-          <MenuItem value="dark">Escuro</MenuItem>
-          <MenuItem value="system">Sistema</MenuItem>
-        </Select>
-      </FormControl>
-
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel>Idioma</InputLabel>
-        <Select
-          value={language}
-          label="Idioma"
-          onChange={(e) => setLanguage(e.target.value)}
-        >
-          <MenuItem value="pt-BR">Português (Brasil)</MenuItem>
-          <MenuItem value="en-US">English (US)</MenuItem>
-          <MenuItem value="es">Español</MenuItem>
-        </Select>
-      </FormControl>
-
-      <FormControl fullWidth sx={{ mb: 3 }}>
-        <InputLabel>Fuso Horário</InputLabel>
-        <Select
-          value={timezone}
-          label="Fuso Horário"
-          onChange={(e) => setTimezone(e.target.value)}
-        >
-          <MenuItem value="America/Sao_Paulo">São Paulo (GMT-3)</MenuItem>
-          <MenuItem value="America/New_York">New York (GMT-4)</MenuItem>
-          <MenuItem value="Europe/London">London (GMT+1)</MenuItem>
-          <MenuItem value="Europe/Paris">Paris (GMT+2)</MenuItem>
-          <MenuItem value="Asia/Tokyo">Tokyo (GMT+9)</MenuItem>
-          <MenuItem value="Australia/Sydney">Sydney (GMT+10)</MenuItem>
-        </Select>
-      </FormControl>
-
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={preferences.emailUpdates}
+              onChange={handleChange}
+              name="emailUpdates"
+            />
+          }
+          label="Atualizações por Email"
+        />
+      </Box>
+      <Box sx={{ mt: 3 }}>
         <Button
-          type="submit"
           variant="contained"
           color="primary"
+          onClick={handleSubmit}
         >
           Salvar Preferências
         </Button>
       </Box>
-
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setShowSnackbar(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert
-          onClose={() => setShowSnackbar(false)}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
-          Preferências salvas com sucesso!
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError(null)}>
+        <Alert onClose={() => setError(null)} severity="error">
+          {error}
         </Alert>
       </Snackbar>
     </Box>

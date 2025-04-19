@@ -10,33 +10,43 @@ import {
   Typography,
   Alert,
   FormControlLabel,
-  Switch,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel
+  Switch
 } from '@mui/material';
 
-type OrderStatus = 'pending' | 'processing' | 'completed' | 'cancelled' | 'refunded';
+interface IntegrationConfig {
+  // Campos comuns
+  apiKey?: string;
+  clientId?: string;
+  clientSecret?: string;
+  webhookUrl?: string;
+  storeUrl?: string;
 
-interface EcommerceConfigData {
-  apiKey: string;
-  storeUrl: string;
-  webhookUrl: string;
-  syncProducts: boolean;
-  syncOrders: boolean;
-  syncCustomers: boolean;
-  syncInventory: boolean;
-  syncInterval: string;
-  orderStatus: OrderStatus[];
-  notifyCustomer: boolean;
+  // Campos específicos de pagamento
+  merchantId?: string;
+  secretKey?: string;
+
+  // Campos específicos de e-commerce
+  syncInterval?: string;
+  syncProducts?: boolean;
+  syncOrders?: boolean;
+  syncCustomers?: boolean;
+  syncInventory?: boolean;
+  notifyCustomer?: boolean;
+
+  // Campos específicos de marketing
+  campaignId?: string;
+  adAccountId?: string;
+  pixelId?: string;
+
+  // Permite campos adicionais
+  [key: string]: string | boolean | undefined;
 }
 
 interface EcommerceConfigProps {
   open: boolean;
   onClose: () => void;
   platform: string;
-  onSave: (config: EcommerceConfigData) => Promise<void>;
+  onSave: (config: IntegrationConfig) => Promise<void>;
 }
 
 export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
@@ -45,7 +55,7 @@ export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
   platform,
   onSave
 }) => {
-  const [config, setConfig] = useState<EcommerceConfigData>({
+  const [config, setConfig] = useState<IntegrationConfig>({
     apiKey: '',
     storeUrl: '',
     webhookUrl: '',
@@ -54,7 +64,6 @@ export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
     syncCustomers: true,
     syncInventory: true,
     syncInterval: '60',
-    orderStatus: ['pending', 'processing', 'completed'],
     notifyCustomer: true
   });
 
@@ -75,21 +84,12 @@ export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
     });
   };
 
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setConfig({
-      ...config,
-      orderStatus: event.target.value as OrderStatus[]
-    });
-  };
-
   const handleSave = async () => {
     try {
       setLoading(true);
       setError(null);
 
       await onSave(config);
-
-      onClose();
     } catch (err) {
       setError('Ocorreu um erro ao salvar as configurações.');
       console.error(err);
@@ -200,22 +200,6 @@ export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
               type="number"
             />
 
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Status dos Pedidos a Sincronizar</InputLabel>
-              <Select
-                multiple
-                value={config.orderStatus}
-                onChange={handleSelectChange}
-                label="Status dos Pedidos a Sincronizar"
-              >
-                <MenuItem value="pending">Pendente</MenuItem>
-                <MenuItem value="processing">Em Processamento</MenuItem>
-                <MenuItem value="completed">Concluído</MenuItem>
-                <MenuItem value="cancelled">Cancelado</MenuItem>
-                <MenuItem value="refunded">Reembolsado</MenuItem>
-              </Select>
-            </FormControl>
-
             <FormControlLabel
               control={
                 <Switch
@@ -224,7 +208,7 @@ export const EcommerceConfig: React.FC<EcommerceConfigProps> = ({
                   color="primary"
                 />
               }
-              label="Notificar Cliente sobre Atualizações"
+              label="Notificar Cliente"
             />
           </Box>
         </Box>

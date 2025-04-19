@@ -8,28 +8,43 @@ import {
   Button,
   Box,
   Typography,
-  Alert,
-  FormControlLabel,
-  Switch
+  Alert
 } from '@mui/material';
-import { integrationService } from '@/services/integrations';
 
-interface MarketingConfigData {
-  apiKey: string;
-  clientId: string;
-  clientSecret: string;
-  accountId: string;
-  accessToken: string;
-  refreshToken: string;
-  autoSync: boolean;
-  syncInterval: string;
+interface IntegrationConfig {
+  // Campos comuns
+  apiKey?: string;
+  clientId?: string;
+  clientSecret?: string;
+  webhookUrl?: string;
+  storeUrl?: string;
+
+  // Campos específicos de pagamento
+  merchantId?: string;
+  secretKey?: string;
+
+  // Campos específicos de e-commerce
+  syncInterval?: string;
+  syncProducts?: boolean;
+  syncOrders?: boolean;
+  syncCustomers?: boolean;
+  syncInventory?: boolean;
+  notifyCustomer?: boolean;
+
+  // Campos específicos de marketing
+  campaignId?: string;
+  adAccountId?: string;
+  pixelId?: string;
+
+  // Permite campos adicionais
+  [key: string]: string | boolean | undefined;
 }
 
 interface MarketingConfigProps {
   open: boolean;
   onClose: () => void;
   platform: string;
-  onSave: (config: MarketingConfigData) => Promise<void>;
+  onSave: (config: IntegrationConfig) => Promise<void>;
 }
 
 export const MarketingConfig: React.FC<MarketingConfigProps> = ({
@@ -38,15 +53,13 @@ export const MarketingConfig: React.FC<MarketingConfigProps> = ({
   platform,
   onSave
 }) => {
-  const [config, setConfig] = useState<MarketingConfigData>({
+  const [config, setConfig] = useState<IntegrationConfig>({
     apiKey: '',
     clientId: '',
     clientSecret: '',
-    accountId: '',
-    accessToken: '',
-    refreshToken: '',
-    autoSync: true,
-    syncInterval: '30'
+    adAccountId: '',
+    pixelId: '',
+    campaignId: ''
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -56,13 +69,6 @@ export const MarketingConfig: React.FC<MarketingConfigProps> = ({
     setConfig({
       ...config,
       [field]: event.target.value
-    });
-  };
-
-  const handleSwitchChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setConfig({
-      ...config,
-      [field]: event.target.checked
     });
   };
 
@@ -123,58 +129,33 @@ export const MarketingConfig: React.FC<MarketingConfigProps> = ({
             type="password"
           />
 
+          <Typography variant="subtitle2" gutterBottom sx={{ mt: 3 }}>
+            Configurações da Conta
+          </Typography>
+
           <TextField
             fullWidth
-            label="Account ID"
-            value={config.accountId}
-            onChange={handleChange('accountId')}
+            label="ID da Conta de Anúncios"
+            value={config.adAccountId}
+            onChange={handleChange('adAccountId')}
             margin="normal"
           />
 
           <TextField
             fullWidth
-            label="Access Token"
-            value={config.accessToken}
-            onChange={handleChange('accessToken')}
+            label="ID do Pixel"
+            value={config.pixelId}
+            onChange={handleChange('pixelId')}
             margin="normal"
-            type="password"
           />
 
           <TextField
             fullWidth
-            label="Refresh Token"
-            value={config.refreshToken}
-            onChange={handleChange('refreshToken')}
+            label="ID da Campanha"
+            value={config.campaignId}
+            onChange={handleChange('campaignId')}
             margin="normal"
-            type="password"
           />
-
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="subtitle2" gutterBottom>
-              Configurações de Sincronização
-            </Typography>
-
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={config.autoSync}
-                  onChange={handleSwitchChange('autoSync')}
-                  color="primary"
-                />
-              }
-              label="Sincronização Automática"
-            />
-
-            <TextField
-              fullWidth
-              label="Intervalo de Sincronização (minutos)"
-              value={config.syncInterval}
-              onChange={handleChange('syncInterval')}
-              margin="normal"
-              type="number"
-              disabled={!config.autoSync}
-            />
-          </Box>
         </Box>
       </DialogContent>
       <DialogActions>

@@ -2,7 +2,15 @@ interface IntegrationConfig {
   apiKey?: string;
   clientId?: string;
   clientSecret?: string;
-  [key: string]: any;
+  webhookUrl?: string;
+  storeUrl?: string;
+  syncInterval?: string;
+  syncProducts?: boolean;
+  syncOrders?: boolean;
+  syncCustomers?: boolean;
+  syncInventory?: boolean;
+  notifyCustomer?: boolean;
+  [key: string]: string | boolean | undefined;
 }
 
 class IntegrationService {
@@ -24,31 +32,30 @@ class IntegrationService {
 
   public async connect(platform: string, config: IntegrationConfig): Promise<boolean> {
     try {
-      // Aqui você implementaria a lógica real de conexão com a plataforma
-      console.log(`Conectando com ${platform}`, config);
+      // Simula uma chamada de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Simulando uma conexão bem-sucedida
-      this.integrationStatus.set(platform, true);
       this.integrationConfigs.set(platform, config);
+      this.integrationStatus.set(platform, true);
       
       return true;
     } catch (error) {
-      console.error(`Erro ao conectar com ${platform}:`, error);
+      console.error('Error connecting to platform:', error);
       return false;
     }
   }
 
   public async disconnect(platform: string): Promise<boolean> {
     try {
-      // Aqui você implementaria a lógica real de desconexão
-      console.log(`Desconectando de ${platform}`);
+      // Simula uma chamada de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      this.integrationStatus.delete(platform);
       this.integrationConfigs.delete(platform);
+      this.integrationStatus.delete(platform);
       
       return true;
     } catch (error) {
-      console.error(`Erro ao desconectar de ${platform}:`, error);
+      console.error('Error disconnecting from platform:', error);
       return false;
     }
   }
@@ -63,14 +70,14 @@ class IntegrationService {
 
   public async updateConfig(platform: string, config: IntegrationConfig): Promise<boolean> {
     try {
-      // Aqui você implementaria a lógica real de atualização da configuração
-      console.log(`Atualizando configuração de ${platform}`, config);
+      // Simula uma chamada de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       this.integrationConfigs.set(platform, config);
       
       return true;
     } catch (error) {
-      console.error(`Erro ao atualizar configuração de ${platform}:`, error);
+      console.error('Error updating platform config:', error);
       return false;
     }
   }

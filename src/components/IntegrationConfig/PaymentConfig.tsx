@@ -11,17 +11,40 @@ import {
   Alert
 } from '@mui/material';
 
-interface PaymentConfigData {
-  apiKey: string;
-  merchantId: string;
-  secretKey: string;
+interface IntegrationConfig {
+  // Campos comuns
+  apiKey?: string;
+  clientId?: string;
+  clientSecret?: string;
+  webhookUrl?: string;
+  storeUrl?: string;
+
+  // Campos específicos de pagamento
+  merchantId?: string;
+  secretKey?: string;
+
+  // Campos específicos de e-commerce
+  syncInterval?: string;
+  syncProducts?: boolean;
+  syncOrders?: boolean;
+  syncCustomers?: boolean;
+  syncInventory?: boolean;
+  notifyCustomer?: boolean;
+
+  // Campos específicos de marketing
+  campaignId?: string;
+  adAccountId?: string;
+  pixelId?: string;
+
+  // Permite campos adicionais
+  [key: string]: string | boolean | undefined;
 }
 
 interface PaymentConfigProps {
   open: boolean;
   onClose: () => void;
   platform: string;
-  onSave: (config: PaymentConfigData) => Promise<void>;
+  onSave: (config: IntegrationConfig) => Promise<void>;
 }
 
 export const PaymentConfig: React.FC<PaymentConfigProps> = ({
@@ -30,7 +53,7 @@ export const PaymentConfig: React.FC<PaymentConfigProps> = ({
   platform,
   onSave
 }) => {
-  const [config, setConfig] = useState<PaymentConfigData>({
+  const [config, setConfig] = useState<IntegrationConfig>({
     apiKey: '',
     merchantId: '',
     secretKey: ''

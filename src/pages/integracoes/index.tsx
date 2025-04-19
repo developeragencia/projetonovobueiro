@@ -37,12 +37,40 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+interface IntegrationConfig {
+  // Campos comuns
+  apiKey?: string;
+  clientId?: string;
+  clientSecret?: string;
+  webhookUrl?: string;
+  storeUrl?: string;
+
+  // Campos específicos de pagamento
+  merchantId?: string;
+  secretKey?: string;
+
+  // Campos específicos de e-commerce
+  syncInterval?: string;
+  syncProducts?: boolean;
+  syncOrders?: boolean;
+  syncCustomers?: boolean;
+  syncInventory?: boolean;
+  notifyCustomer?: boolean;
+
+  // Campos específicos de marketing
+  campaignId?: string;
+  adAccountId?: string;
+  pixelId?: string;
+
+  // Permite campos adicionais
+  [key: string]: string | boolean | undefined;
+}
+
 export default function Integracoes() {
   const {
     integrations,
     connect,
-    disconnect,
-    isConnected
+    disconnect
   } = useIntegrations();
 
   const [tabValue, setTabValue] = useState(0);
@@ -101,7 +129,7 @@ export default function Integracoes() {
     });
   };
 
-  const handleSaveConfig = async (platform: string, config: any) => {
+  const handleSaveConfig = async (platform: string, config: IntegrationConfig) => {
     try {
       const success = await connect(platform, config);
       

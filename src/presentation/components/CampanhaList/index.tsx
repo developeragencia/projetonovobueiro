@@ -12,19 +12,21 @@ import {
 } from '@mui/material';
 import CampanhaCard from '../CampanhaCard';
 
+interface Metricas {
+  cpc?: number;
+  ctr?: number;
+  conversoes?: number;
+  gastos?: number;
+  impressoes?: number;
+  roas?: number;
+}
+
 interface Campanha {
   id: string;
   nome: string;
   plataforma: string;
-  status: 'ativa' | 'pausada' | 'encerrada';
-  orcamentoDiario: number;
-  metricas: {
-    impressoes: number;
-    cliques: number;
-    conversoes: number;
-    cpc: number;
-    ctr: number;
-  };
+  status: string;
+  metricas: Metricas;
 }
 
 interface CampanhaListProps {
@@ -56,6 +58,14 @@ const CampanhaList: React.FC<CampanhaListProps> = ({
     return matchesSearch && matchesStatus && matchesPlataforma;
   });
 
+  const handleToggleStatus = (id: string, novoStatus: string) => {
+    if (novoStatus === 'ativo') {
+      onActivateCampanha(id);
+    } else {
+      onPauseCampanha(id);
+    }
+  };
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ mb: 4 }}>
@@ -83,9 +93,9 @@ const CampanhaList: React.FC<CampanhaListProps> = ({
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
                 <MenuItem value="todos">Todos</MenuItem>
-                <MenuItem value="ativa">Ativas</MenuItem>
-                <MenuItem value="pausada">Pausadas</MenuItem>
-                <MenuItem value="encerrada">Encerradas</MenuItem>
+                <MenuItem value="ativo">Ativas</MenuItem>
+                <MenuItem value="pausado">Pausadas</MenuItem>
+                <MenuItem value="encerrado">Encerradas</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -113,11 +123,14 @@ const CampanhaList: React.FC<CampanhaListProps> = ({
           {filteredCampanhas.map(campanha => (
             <Grid item xs={12} sm={6} md={4} key={campanha.id}>
               <CampanhaCard
-                campanha={campanha}
-                onPause={onPauseCampanha}
-                onActivate={onActivateCampanha}
-                onDelete={onDeleteCampanha}
+                id={campanha.id}
+                nome={campanha.nome}
+                status={campanha.status}
+                plataforma={campanha.plataforma}
+                metricas={campanha.metricas}
                 onEdit={onEditCampanha}
+                onDelete={onDeleteCampanha}
+                onToggleStatus={handleToggleStatus}
               />
             </Grid>
           ))}

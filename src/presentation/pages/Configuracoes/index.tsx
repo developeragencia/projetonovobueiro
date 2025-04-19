@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Container,
-  Grid,
   Paper,
   Typography,
   Box,
@@ -17,6 +16,29 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+
+interface NotificationSettings {
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  notificationFrequency: string;
+  customMessage: string;
+}
+
+interface PreferencesSettings {
+  darkMode: boolean;
+  notifications: boolean;
+  emailUpdates: boolean;
+  language: string;
+}
+
+interface UTMSettings {
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmTerm: string;
+  utmContent: string;
+  baseUrl: string;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -53,17 +75,17 @@ export default function Configuracoes() {
     setValue(newValue);
   };
 
-  const handleSaveNotifications = (settings: any) => {
+  const handleSaveNotifications = (settings: NotificationSettings) => {
     console.log('Salvando configurações de notificações:', settings);
     // Implementar lógica de salvamento
   };
 
-  const handleSavePreferences = (preferences: any) => {
+  const handleSavePreferences = (preferences: PreferencesSettings) => {
     console.log('Salvando preferências:', preferences);
     // Implementar lógica de salvamento
   };
 
-  const handleSaveUTM = (config: any) => {
+  const handleSaveUTM = (config: UTMSettings) => {
     console.log('Salvando configurações de UTM:', config);
     // Implementar lógica de salvamento
   };

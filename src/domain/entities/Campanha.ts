@@ -3,6 +3,26 @@ import { MetricasCampanha } from '../value-objects/MetricasCampanha';
 import { StatusCampanha } from '../value-objects/StatusCampanha';
 import { PlataformaAnuncio } from '../value-objects/PlataformaAnuncio';
 
+interface ConfiguracoesCampanha {
+  objetivo?: string;
+  publico?: {
+    idade?: number[];
+    interesses?: string[];
+    localizacao?: string[];
+  };
+  orcamento?: {
+    tipo?: 'diario' | 'total';
+    valor?: number;
+  };
+  criativo?: {
+    titulo?: string;
+    descricao?: string;
+    imagens?: string[];
+    videos?: string[];
+  };
+  [key: string]: unknown;
+}
+
 export class Campanha {
   private readonly id: string;
   private status: StatusCampanha;
@@ -15,7 +35,7 @@ export class Campanha {
     private readonly contaAnuncio: string,
     private readonly plataforma: PlataformaAnuncio,
     private orcamentoDiario: number,
-    private configuracoes: Record<string, any>,
+    private configuracoes: ConfiguracoesCampanha,
     status?: StatusCampanha
   ) {
     this.id = uuidv4();
@@ -56,7 +76,7 @@ export class Campanha {
     return this.orcamentoDiario;
   }
 
-  public getConfiguracoes(): Record<string, any> {
+  public getConfiguracoes(): ConfiguracoesCampanha {
     return { ...this.configuracoes };
   }
 

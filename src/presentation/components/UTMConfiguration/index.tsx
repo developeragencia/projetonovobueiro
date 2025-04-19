@@ -8,10 +8,19 @@ import {
   IconButton,
   Snackbar
 } from '@mui/material';
-import { ContentCopy, Add } from '@mui/icons-material';
+import { ContentCopy } from '@mui/icons-material';
+
+interface UTMConfig {
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmTerm: string;
+  utmContent: string;
+  baseUrl: string;
+}
 
 interface UTMConfigurationProps {
-  onSave: (config: any) => void;
+  onSave: (config: UTMConfig) => void;
 }
 
 const UTMConfiguration: React.FC<UTMConfigurationProps> = ({ onSave }) => {
