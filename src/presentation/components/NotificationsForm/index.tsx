@@ -4,24 +4,51 @@ import {
   Typography,
   Switch,
   FormControlLabel,
+  Button,
+  Alert,
+  Snackbar
 } from '@mui/material';
 
-interface NotificationsFormProps {
-  onSave: (settings: NotificationSettings) => Promise<void>;
-}
-
-interface NotificationSettings {
+export interface NotificationSettings {
   emailNotifications: boolean;
   pushNotifications: boolean;
   notificationFrequency: string;
   customMessage: string;
 }
 
-const NotificationsForm: React.FC<NotificationsFormProps> = ({ onSave }) => {
-  const [notifications, setNotifications] = React.useState(true);
+interface NotificationsFormProps {
+  onSave: (settings: NotificationSettings) => Promise<void>;
+}
 
-  const handleNotificationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNotifications(event.target.checked);
+export const NotificationsForm: React.FC<NotificationsFormProps> = ({ onSave }) => {
+  const [settings, setSettings] = React.useState<NotificationSettings>({
+    emailNotifications: true,
+    pushNotifications: true,
+    notificationFrequency: 'daily',
+    customMessage: ''
+  });
+  const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    setSettings(prev => ({
+      ...prev,
+      [name]: checked
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      await onSave(settings);
+      setError(null);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar notificações';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,15 +59,40 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({ onSave }) => {
       <FormControlLabel
         control={
           <Switch
-            checked={notifications}
-            onChange={handleNotificationChange}
+            checked={settings.emailNotifications}
+            onChange={handleChange}
+            name="emailNotifications"
             color="primary"
           />
         }
-        label="Ativar notificações"
+        label="Notificações por Email"
       />
+      <FormControlLabel
+        control={
+          <Switch
+            checked={settings.pushNotifications}
+            onChange={handleChange}
+            name="pushNotifications"
+            color="primary"
+          />
+        }
+        label="Notificações Push"
+      />
+      <Box sx={{ mt: 3 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? 'Salvando...' : 'Salvar Notificações'}
+        </Button>
+      </Box>
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError(null)}>
+        <Alert onClose={() => setError(null)} severity="error">
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
-};
-
-export default NotificationsForm; 
+}; 

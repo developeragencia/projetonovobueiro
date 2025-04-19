@@ -5,10 +5,12 @@ import {
   Typography,
   Box,
   Tabs,
-  Tab
+  Tab,
+  Alert,
+  Snackbar
 } from '@mui/material';
 import { Settings } from '@mui/icons-material';
-import NotificationsForm from '../../components/NotificationsForm';
+import { NotificationsForm, NotificationSettings } from '../../components/NotificationsForm';
 import PreferencesForm from '../../components/PreferencesForm';
 import UTMConfiguration from '../../components/UTMConfiguration';
 
@@ -16,13 +18,6 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
-}
-
-interface NotificationSettings {
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-  notificationFrequency: string;
-  customMessage: string;
 }
 
 interface PreferencesSettings {
@@ -70,24 +65,77 @@ function a11yProps(index: number) {
 
 export default function Configuracoes() {
   const [value, setValue] = useState(0);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'success' | 'error'
+  });
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const handleSaveNotifications = (settings: NotificationSettings) => {
-    console.log('Salvando configurações de notificações:', settings);
-    // Implementar lógica de salvamento
+  const handleSaveNotifications = async (settings: NotificationSettings): Promise<void> => {
+    try {
+      console.log('Salvando configurações de notificações:', settings);
+      // Implementar lógica de salvamento
+      await Promise.resolve(); // Simulando uma operação assíncrona
+      setSnackbar({
+        open: true,
+        message: 'Notificações salvas com sucesso',
+        severity: 'success'
+      });
+    } catch (error) {
+      console.error('Erro ao salvar notificações:', error);
+      setSnackbar({
+        open: true,
+        message: 'Erro ao salvar notificações',
+        severity: 'error'
+      });
+      throw error;
+    }
   };
 
-  const handleSavePreferences = (preferences: PreferencesSettings) => {
-    console.log('Salvando preferências:', preferences);
-    // Implementar lógica de salvamento
+  const handleSavePreferences = async (preferences: PreferencesSettings): Promise<void> => {
+    try {
+      console.log('Salvando preferências:', preferences);
+      // Implementar lógica de salvamento
+      await Promise.resolve(); // Simulando uma operação assíncrona
+      setSnackbar({
+        open: true,
+        message: 'Preferências salvas com sucesso',
+        severity: 'success'
+      });
+    } catch (error) {
+      console.error('Erro ao salvar preferências:', error);
+      setSnackbar({
+        open: true,
+        message: 'Erro ao salvar preferências',
+        severity: 'error'
+      });
+      throw error;
+    }
   };
 
-  const handleSaveUTM = (config: UTMSettings) => {
-    console.log('Salvando configurações de UTM:', config);
-    // Implementar lógica de salvamento
+  const handleSaveUTM = async (config: UTMSettings): Promise<void> => {
+    try {
+      console.log('Salvando configurações de UTM:', config);
+      // Implementar lógica de salvamento
+      await Promise.resolve(); // Simulando uma operação assíncrona
+      setSnackbar({
+        open: true,
+        message: 'Configurações UTM salvas com sucesso',
+        severity: 'success'
+      });
+    } catch (error) {
+      console.error('Erro ao salvar configurações UTM:', error);
+      setSnackbar({
+        open: true,
+        message: 'Erro ao salvar configurações UTM',
+        severity: 'error'
+      });
+      throw error;
+    }
   };
 
   return (
@@ -103,7 +151,7 @@ export default function Configuracoes() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             value={value}
-            onChange={handleChange}
+            onChange={handleTabChange}
             aria-label="configurações tabs"
             variant="fullWidth"
           >
@@ -123,6 +171,20 @@ export default function Configuracoes() {
           <UTMConfiguration onSave={handleSaveUTM} />
         </TabPanel>
       </Paper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 } 
